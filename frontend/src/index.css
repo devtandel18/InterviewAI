@@ -1,0 +1,64 @@
+@import "tailwindcss";
+
+@theme {
+  /* Type */
+  --font-display: "Space Grotesk", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", monospace;
+
+  /* Brand */
+  --color-brand-50: #eef0ff;
+  --color-brand-100: #e0e3ff;
+  --color-brand-300: #a5abff;
+  --color-brand-400: #7d84ff;
+  --color-brand-500: #635bff;
+  --color-brand-600: #4f47e0;
+  --color-brand-700: #3e37b3;
+
+  --color-amber-signal: #f5a524;
+  --color-success: #3dd68c;
+  --color-danger: #f26d6d;
+
+  /* Dark surfaces (primary theme) */
+  --color-surface-dark: #0b0e14;
+  --color-surface-dark-raised: #12151c;
+  --color-surface-dark-sunken: #080a0f;
+  --color-border-dark: #1f242e;
+}
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  @apply bg-white text-slate-900 dark:bg-[#0b0e14] dark:text-slate-100;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+}
+
+::selection {
+  background-color: var(--color-brand-500);
+  color: white;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-brand-500);
+  outline-offset: 2px;
+}
+
+.font-mono-tabular {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}

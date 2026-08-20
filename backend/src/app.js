@@ -10,6 +10,7 @@ import performanceRoutes from "./routes/performance.routes.js";
 import profileRoutes from "./routes/profile.routes.js";
 import settingsRoutes from "./routes/settings.routes.js";
 import passwordResetRoutes from "./routes/passwordReset.routes.js"
+import path from "path";
 
 const app = express();
 
@@ -29,6 +30,7 @@ app.use("/api/interviews", interviewRoutes);
 app.use("/api/performance", performanceRoutes);
 app.use("/api/profile", profileRoutes);
 app.use("/api/settings", settingsRoutes);
+app.use("/uploads", express.static(path.resolve("uploads")));
 
 // Future route mounts go here as features are added:
 // app.use("/api/interviews", interviewRoutes);

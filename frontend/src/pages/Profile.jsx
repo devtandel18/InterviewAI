@@ -7,6 +7,8 @@ import SkillsInput from "../components/profile/SkillsInput";
 import { useAuth } from "../context/AuthContext";
 import { getProfileRequest, updateProfileRequest } from "../api/profileApi";
 import { TARGET_ROLES } from "../utils/constants";
+import { useRef } from "react";
+import { uploadProfilePictureRequest } from "../api/profileApi";
 
 const EXPERIENCE_LEVELS = ["Student", "Entry Level", "Mid Level", "Senior", "Staff+"];
 
@@ -16,6 +18,67 @@ export default function Profile() {
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const fileInputRef = useRef(null);
+const [uploading, setUploading] = useState(false);
+
+const handleFileSelect = async (e) => {
+  const file = e.target.files?.[0];
+  if (!file) return;
+
+  setUploading(true);
+  setError("");
+  try {
+    const updated = await uploadProfilePictureRequest(file);
+    setForm(updated);
+    setUser(updated);
+    localStorage.setItem("interviewai_user", JSON.stringify(updated));
+  } catch (err) {
+    setError(err.response?.data?.message || "Couldn't upload image.");
+  } finally {
+    setUploading(false);
+  }
+};
+
+// Replace the old "Profile picture URL" <Input> block with:
+<div>
+  <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+    Profile picture
+  </label>
+  <div className="mt-2 flex items-center gap-4">
+    <div className="h-16 w-16 overflow-hidden rounded-full bg-slate-100 dark:bg-[#1f242e]">
+      {form.profilePicture ? (
+        <img
+          src={`http://localhost:5000${form.profilePicture}`}
+          alt="Profile"
+          className="h-full w-full object-cover"
+        />
+      ) : (
+        <div className="flex h-full w-full items-center justify-center text-lg font-semibold text-slate-400">
+          {form.name?.[0]?.toUpperCase()}
+        </div>
+      )}
+    </div>
+    <div>
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/jpeg,image/png,image/webp"
+        onChange={handleFileSelect}
+        className="hidden"
+      />
+      <Button
+        type="button"
+        variant="secondary"
+        size="sm"
+        loading={uploading}
+        onClick={() => fileInputRef.current?.click()}
+      >
+        Change photo
+      </Button>
+      <p className="mt-1 text-xs text-slate-400">JPEG, PNG, or WebP. Max 5MB.</p>
+    </div>
+  </div>
+</div>
 
   useEffect(() => {
     getProfileRequest().then(setForm);

@@ -3,6 +3,8 @@ import { body } from "express-validator";
 import { getMyProfile, updateMyProfile } from "../controllers/profile.controller.js";
 import { protect } from "../middleware/auth.middleware.js";
 import { validate } from "../middleware/validate.middleware.js";
+import { uploadAvatar } from "../middleware/upload.middleware.js";
+import { getMyProfile, updateMyProfile, uploadProfilePicture } from "../controllers/profile.controller.js";
 
 const router = Router();
 
@@ -20,5 +22,7 @@ router.put(
   validate,
   updateMyProfile
 );
+
+router.post("/picture", protect, uploadAvatar, uploadProfilePicture);
 
 export default router;

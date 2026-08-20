@@ -10,3 +10,14 @@ export const updateMyProfile = asyncHandler(async (req, res) => {
   const user = await profileService.updateProfile(req.user._id, req.body);
   res.status(200).json({ success: true, data: { user } });
 });
+
+export const uploadProfilePicture = asyncHandler(async (req, res) => {
+  if (!req.file) {
+    throw ApiError.badRequest("No file uploaded");
+  }
+
+  const url = `/uploads/avatars/${req.file.filename}`;
+  const user = await profileService.updateProfile(req.user._id, { profilePicture: url });
+
+  res.status(200).json({ success: true, data: { user } });
+});
